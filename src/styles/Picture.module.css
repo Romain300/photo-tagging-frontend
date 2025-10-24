@@ -19,3 +19,13 @@
   position: absolute;
   translate: -50% -50%;
 }
+
+.divChoices {
+  translate: -50% 10%;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  padding: 0.5rem;
+  position: absolute;
+}

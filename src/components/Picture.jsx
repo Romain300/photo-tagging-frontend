@@ -2,7 +2,7 @@ import styles from "../styles/Picture.module.css";
 import { useState, useRef, useEffect } from "react";
 import Checkbox from "./Input";
 
-function Picture() {
+function Picture({ image }) {
     const [click, setClick] = useState(null);
     const [form, setForm] = useState([
         {name: "Waldo", checked: false},
@@ -35,7 +35,7 @@ function Picture() {
 
     useEffect(() => {
         const handleOutsideClick = (event) => {
-            if (event.target !== pictureRef.current) {
+            if (pictureRef.current && event.target !== pictureRef.current) {
                 setClick(null);
             };
         };
@@ -52,7 +52,9 @@ function Picture() {
   
 
     return (
-        <div ref={pictureRef} className={styles.mainContainer} onClick={onclick}>
+        <div className={styles.mainContainer} >
+        
+            <img ref={pictureRef} onClick={onclick} src={image} alt="where is waldo picture"/>
             
             {click && (
                 <>
@@ -88,7 +90,9 @@ function Picture() {
         
 
             
+        
         </div>
+        
 
     )
 };

@@ -4,40 +4,88 @@
   box-sizing: border-box;
 }
 
-.mainContainer {
-    border: 2px solid red;
-    position: relative;
+body {
+  background-color: #fafafa;
+  font-family: system-ui, sans-serif;
 }
 
+/* MAIN IMAGE CONTAINER */
+.mainContainer {
+  width: 800px;
+  position: relative;
+}
+
+/* CLICK INDICATOR */
 .click {
   border-radius: 50%;
-  background-color: rgba(255, 59, 48, 0.4);
-  border: 2px solid white;
-  width: 2.5rem;
-  height: 2.5rem;
+  background-color: rgba(255, 80, 80, 0.35); 
+  border: 2px solid white;                 
+  width: 2.7rem;
+  height: 2.7rem;
   position: absolute;
   translate: -50% -50%;
   z-index: 3;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.35); 
 }
 
+/* CHOICE MENU */
 .divChoices {
-  translate: -50% 20%;
-  background-color: rgba(255, 255, 255, 0.95);
-  border: 2px solid #333;
-  border-radius: 0.5rem;
+  translate: -50% 15%;
+  background-color: rgba(255, 255, 255, 0.97);
+  border: 1px solid #d0d0d0;
+  border-radius: 0.6rem;
   display: flex;
   flex-direction: column;
-  width: fit-content;
+  width: 160px;
   padding: 0.75rem;
   position: absolute;
   z-index: 3;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  gap: 0.35rem;
+  margin-top: 1rem;
 }
 
-img {
-  width: 500px;
-  height: 300px;
-  display: block;
+/* CHARACTER CARD */
+.card {
+  background-color: white;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid #0057b7;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
 
+.characteres {
+  width: 300px;
+  height: auto;
+  border-radius: 0.4rem;
+}
+
+/* INTRO SECTION */
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  text-align: center;
+}
+
+.intro h1 {
+  color: #d62828; /* Waldo red */
+}
+
+.intro h2 {
+  color: #0057b7; /* Waldo blue */
+  font-weight: 600;
+}
+
+/* GENERAL PAGE LAYOUT */
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1rem;
 }

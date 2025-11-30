@@ -18,19 +18,37 @@ body {
 /* CLICK INDICATOR */
 .click {
   border-radius: 50%;
-  background-color: rgba(255, 80, 80, 0.35); 
   border: 2px solid white;                 
   width: 2.7rem;
   height: 2.7rem;
   position: absolute;
-  translate: -50% -50%;
+  transform: translate(-50%, -50%);
   z-index: 3;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.35); 
+  background-color: rgba(255, 80, 80, 0.35);
+  
+}
+
+.foundMarker {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid #4caf50; 
+  background: rgba(76, 175, 80, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #4caf50;
+  font-weight: bold;
+  transform: translate(-50%, -50%);
+  z-index: 3;
 }
 
 /* CHOICE MENU */
 .divChoices {
-  translate: -50% 15%;
+  transform: translate(-50%, 15%);
   background-color: rgba(255, 255, 255, 0.97);
   border: 1px solid #d0d0d0;
   border-radius: 0.6rem;
@@ -89,3 +107,4 @@ section {
   gap: 1.2rem;
   padding: 1rem;
 }
+

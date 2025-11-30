@@ -8,27 +8,22 @@ function Picture() {
     const [click, setClick] = useState(null);
     const [secondes, setSecondes] = useState(0);
     const [minutes, setMinutes] = useState(0);
-    // const [form, setForm] = useState([
-    //     {name: "Waldo", checked: false},
-    //     {name: "Wizard", checked: false},
-    //     {name: "Wanda", checked: false},
-    //     {name: "Odlaw", checked: false}
-    // ]);
-
     const [form, setForm] = useState(null);
-
     const [picture, setPicture] = useState(null);
-
     const pictureRef = useRef();
     const divRef = useRef();
-    console.log(click)
+    const [message, setMessage] = useState(null);
+    const [markers, setMarkers] = useState([]);
 
     const onclick = (e) => {
         const rect = pictureRef.current.getBoundingClientRect();
         setClick({
             x: e.clientX - rect.left,
-            y: e.clientY - rect.top
+            y: e.clientY - rect.top,
+            xPer: (e.clientX - rect.left) / rect.width,
+            yPer: (e.clientY - rect.top) / rect.height
         })
+        setMessage(null);
     };
 
     const onChange = (event) => {
@@ -39,6 +34,26 @@ function Picture() {
             
             )
         );
+    };
+
+    const onSubmit = (event) => {
+        event.preventDefault();
+        
+        const found = form.find(character => 
+            character.checked 
+            && click.xPer > character.xMin && click.xPer < character.xMax
+            && click.yPer > character.yMin && click.yPer < character.yMax
+        );
+
+        if (found) {
+            setMessage(null);
+            setForm((prev) => (prev.filter((char) => char.name !== found.name )));
+            setMarkers((prev) => (
+                [...prev, {x: click.x, y: click.y}]
+            ));
+        } else {
+            setMessage("Oops, wrong guess!");
+        }
     };
 
     useEffect(() => {
@@ -68,7 +83,8 @@ function Picture() {
 
             const result = await response.json();
             setPicture(result.image);
-            setForm(result.image.characters)
+            setForm(result.image.characters);
+            console.log(result.image.characters)
             return;
         }
 
@@ -83,10 +99,6 @@ function Picture() {
         const intervalMinute = setInterval(() => {
             setMinutes((prev) => (prev + 1));
         }, 60000);
-
-
-
-        
 
         return () => {
             clearInterval(intervalSeconde);
@@ -121,10 +133,9 @@ function Picture() {
                             <div
                                 className={styles.click} 
                                 style={{
-                                    left: click.x, 
-                                    top: click.y, 
+                                    left: `${click.x}px`,
+                                    top: `${click.y}px`
                                 }} 
-                                onClick={(e) => e.stopPropagation()}
                             >
                             </div>
 
@@ -132,21 +143,38 @@ function Picture() {
                                 ref={divRef} 
                                 className={styles.divChoices} 
                                 style={{ 
-                                    left: click.x, 
-                                    top: click.y, 
+                                    left: `${click.x}px`,
+                                    top: `${click.y}px`
                                 }}
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <h3>Who's here</h3>
-                                <form>
+                                { message && (
+                                    <p>{message}</p>
+                                )}
+                                <form onSubmit={onSubmit}>
                                     {form.map((character, index) => (
                                         <Checkbox onChange={onChange} key={index} id={index} checked={character.checked} name={character.name} label={character.name}/>
                                     ))}
+                                    <button type="submit">Submit</button>
                                 </form>
                             </div>
 
                         </>
                     )}
+
+                    {markers.map((marker, index) => (
+                        <div
+                            key={index}
+                            className={styles.foundMarker}
+                            style={{
+                                left: `${marker.x}px`,
+                                top: `${marker.y}px`
+                            }}
+                        >
+                            ✔
+                        </div>
+                    ))}
         
                 </div>
             )}
@@ -157,5 +185,7 @@ function Picture() {
 };
 
 export default Picture;
+
+//add end of game + promp name player + review control on checkbox
 
 

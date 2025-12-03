@@ -2,6 +2,7 @@ import styles from "../styles/Picture.module.css";
 import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Checkbox from "./Input";
+import { Input } from "./Input";
 
 function Picture() {
     const { pictureId } = useParams();
@@ -14,6 +15,8 @@ function Picture() {
     const divRef = useRef();
     const [message, setMessage] = useState(null);
     const [markers, setMarkers] = useState([]);
+    const dialogRef = useRef();
+    const [gameFinished, setGameFinished] = useState(false);
 
     const onclick = (e) => {
         const rect = pictureRef.current.getBoundingClientRect();
@@ -47,13 +50,24 @@ function Picture() {
 
         if (found) {
             setMessage(null);
-            setForm((prev) => (prev.filter((char) => char.name !== found.name )));
+            const updatedForm = form.filter(char => char.name !== found.name)
+            setForm(updatedForm);
+            setClick(null);
             setMarkers((prev) => (
                 [...prev, {x: click.x, y: click.y}]
             ));
+
+            if (updatedForm.length <= 0) {
+                setGameFinished(true);
+                dialogRef.current.showModal();
+            }
         } else {
             setMessage("Oops, wrong guess!");
         }
+    };
+
+    const closeDialog = () => {
+        dialogRef.current.close();
     };
 
     useEffect(() => {
@@ -74,7 +88,7 @@ function Picture() {
         const getPicture = async() => {
             const response = await fetch(`http://localhost:3000/pictures/${pictureId}`, {
                 mode: "cors",
-                headers: { "content-type": "applpication/json"}
+                headers: { "content-type": "application/json"}
             });
 
             if (!response.ok) {
@@ -92,6 +106,8 @@ function Picture() {
     }, [pictureId]);
 
     useEffect(() => {
+        if (gameFinished) return;
+
         const intervalSeconde = setInterval(() => {
             setSecondes((prev) => (prev + 1));
         }, 1000);
@@ -104,7 +120,7 @@ function Picture() {
             clearInterval(intervalSeconde);
             clearInterval(intervalMinute);
         }
-    }, []);
+    }, [gameFinished]);
     
 
   
@@ -178,6 +194,18 @@ function Picture() {
         
                 </div>
             )}
+
+            <dialog ref={dialogRef}>
+                <h3>Congratulation! you finished it in:</h3>
+                <h2>{minutes}:{secondes % 60}</h2>
+                <form>
+                    <div>
+                        <Input id='name' label='Enter Your Name:'  type='text' />
+                    </div>
+                    <button type="button" onClick={closeDialog}>Close</button>
+                </form>
+            </dialog>
+
         </section>
         
 
@@ -186,6 +214,9 @@ function Picture() {
 
 export default Picture;
 
-//add end of game + promp name player + review control on checkbox
+//add end of game + promp name player 
+//Stop playing after dialog closed and check Z markers
+//Finish form
+//add players to database
 
 

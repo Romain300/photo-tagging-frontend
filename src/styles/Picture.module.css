@@ -108,3 +108,43 @@ section {
   padding: 1rem;
 }
 
+dialog {
+  border: none;
+  border-radius: 0.8rem;
+  padding: 1.5rem 2rem;
+  background: white;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  width: 320px;
+  max-width: 90%;
+  text-align: center;
+  align-self: center;
+  justify-self: center;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+dialog h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #0057b7; 
+}
+
+dialog h2 {
+  margin-bottom: 1rem;
+  color: #d62828; 
+  font-weight: bold;
+}
+
+dialog button {
+  background: #0057b7;
+  color: white;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+

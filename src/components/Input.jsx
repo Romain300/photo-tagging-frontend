@@ -4,7 +4,6 @@ function Checkbox({ label, checked, name, id, onChange }) {
     
     return (
         <div>
-            
             <input 
                 id={id} 
                 checked={checked}
@@ -27,12 +26,14 @@ export function Input({ label, type, name, id, onChange, value }) {
             <label htmlFor={id}>
                 {label}
             </label>
-            <input 
+            <input className={styles.input}
                 id={id} 
                 type={type} 
                 name={name} 
                 placeholder={label} 
-                value={value} onChange={onChange}></input>
+                value={value || ""} 
+                onChange={onChange}>
+            </input>
         </div>
 
     )

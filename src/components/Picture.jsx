@@ -1,10 +1,12 @@
 import styles from "../styles/Picture.module.css";
 import { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Checkbox from "./Input";
-import { Input } from "./Input";
+import PLayerForm from "./PlayerForm";
+import Leaderboard from "./Leaderboard";
 
 function Picture() {
+    const location = useLocation();
     const { pictureId } = useParams();
     const [click, setClick] = useState(null);
     const [secondes, setSecondes] = useState(0);
@@ -17,6 +19,24 @@ function Picture() {
     const [markers, setMarkers] = useState([]);
     const dialogRef = useRef();
     const [gameFinished, setGameFinished] = useState(false);
+    const [playerData, setPlayerData] = useState({
+        pictureId,
+        name: null,
+        time: null
+    });
+    const [playerAdded, setPlayerAdded] = useState(false);
+
+    const resetGame = () => {
+        setClick(null);
+        setSecondes(0);
+        setMinutes(0);
+        setForm(picture?.characters || []); 
+        setMarkers([]);
+        setGameFinished(false);
+        setPlayerData({ pictureId, name: null, time: null });
+        setPlayerAdded(false);
+        setMessage(null);
+    };
 
     const onclick = (e) => {
         const rect = pictureRef.current.getBoundingClientRect();
@@ -39,6 +59,14 @@ function Picture() {
         );
     };
 
+    const playerName = (event) => {
+        const { id, value } = event.target;
+        setPlayerData({
+            ...playerData,
+            [id]: value
+        });
+    };
+
     const onSubmit = (event) => {
         event.preventDefault();
         
@@ -59,12 +87,20 @@ function Picture() {
 
             if (updatedForm.length <= 0) {
                 setGameFinished(true);
+                setPlayerData({
+                    ...playerData,
+                    ["time"]: `${minutes}:${secondes % 60}`
+                });
                 dialogRef.current.showModal();
             }
         } else {
             setMessage("Oops, wrong guess!");
         }
     };
+
+    const addPlayer = () => {
+        setPlayerAdded(true);
+    }
 
     const closeDialog = () => {
         dialogRef.current.close();
@@ -126,7 +162,7 @@ function Picture() {
   
 
     return (
-        <section>
+        <section key={location.key}>
             { picture && (
                 <div className={styles.intro}>
                     <h1>🔍 {picture.title}</h1>
@@ -196,14 +232,20 @@ function Picture() {
             )}
 
             <dialog ref={dialogRef}>
-                <h3>Congratulation! you finished it in:</h3>
-                <h2>{minutes}:{secondes % 60}</h2>
-                <form>
-                    <div>
-                        <Input id='name' label='Enter Your Name:'  type='text' />
-                    </div>
-                    <button type="button" onClick={closeDialog}>Close</button>
-                </form>
+                { !playerAdded && (
+                    <>
+                        <h3>Congratulation! you finished it in:</h3>
+                        <h2>{minutes}:{secondes % 60}</h2>
+                        <PLayerForm data={playerData} closeDialog={closeDialog} onChange={playerName} value={playerData.name} addPlayer={addPlayer}/>
+                    </>
+                )}
+
+                { playerAdded && (
+                
+                    <Leaderboard pictureId={pictureId} resetGame={resetGame}/>
+                
+                )}
+                
             </dialog>
 
         </section>
@@ -214,9 +256,6 @@ function Picture() {
 
 export default Picture;
 
-//add end of game + promp name player 
-//Stop playing after dialog closed and check Z markers
-//Finish form
-//add players to database
+//fix issue checkbox on change
 
 

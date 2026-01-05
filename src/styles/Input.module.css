@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-input {
+.input {
     outline: none;
     height: 1.7rem;
     border: 1px solid #D3D3D3;

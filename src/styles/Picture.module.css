@@ -13,6 +13,7 @@ body {
 .mainContainer {
   width: 800px;
   position: relative;
+  margin: 1rem auto; 
 }
 
 /* CLICK INDICATOR */
@@ -31,8 +32,8 @@ body {
 
 .foundMarker {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 2.7rem;
+  height: 2.7rem;
   border-radius: 50%;
   border: 3px solid #4caf50; 
   background: rgba(76, 175, 80, 0.2);
@@ -48,7 +49,7 @@ body {
 
 /* CHOICE MENU */
 .divChoices {
-  transform: translate(-50%, 15%);
+  transform: translate(-50%, 5%);
   background-color: rgba(255, 255, 255, 0.97);
   border: 1px solid #d0d0d0;
   border-radius: 0.6rem;
@@ -100,13 +101,6 @@ body {
 }
 
 /* GENERAL PAGE LAYOUT */
-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.2rem;
-  padding: 1rem;
-}
 
 dialog {
   border: none;
@@ -148,3 +142,38 @@ dialog button {
   font-size: 1rem;
 }
 
+@media (max-width: 1200px) {
+  .mainContainer {
+    width: 500px;
+  }
+
+  .click, .foundMarker {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+  
+}
+
+@media (max-width: 700px) {
+  .mainContainer {
+    width: 330px;
+  }
+
+  .characteres {
+    width: 250px;
+  }
+
+  .namesChar {
+    width: 250px;
+  }
+
+  .click, .foundMarker {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .divChoices {
+    width: 140px;
+  }
+
+}

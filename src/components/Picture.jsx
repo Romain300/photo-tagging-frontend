@@ -41,8 +41,6 @@ function Picture() {
     const onclick = (e) => {
         const rect = pictureRef.current.getBoundingClientRect();
         setClick({
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top,
             xPer: (e.clientX - rect.left) / rect.width,
             yPer: (e.clientY - rect.top) / rect.height
         })
@@ -50,7 +48,7 @@ function Picture() {
     };
 
     const onChange = (event) => {
-        const name = event.target.name;
+        const name = event.target.value;
         setForm((prevForm) => 
             prevForm.map((item) => 
                 item.name === name ? { ...item, checked: !item.checked } : { ...item, checked: false }
@@ -82,7 +80,7 @@ function Picture() {
             setForm(updatedForm);
             setClick(null);
             setMarkers((prev) => (
-                [...prev, {x: click.x, y: click.y}]
+                [...prev, {xPer: click.xPer, yPer: click.yPer}]
             ));
 
             if (updatedForm.length <= 0) {
@@ -133,8 +131,10 @@ function Picture() {
 
             const result = await response.json();
             setPicture(result.image);
-            setForm(result.image.characters);
-            console.log(result.image.characters)
+            const characters = result.image.characters.map((character) => (
+                {...character, checked: false}
+            ))
+            setForm(characters);
             return;
         }
 
@@ -170,7 +170,7 @@ function Picture() {
                     <h3>Find the charactersc below !</h3>
                     <div className={styles.card}>
                         <img className={styles.characteres} src="https://curiousstgeorge.wordpress.com/wp-content/uploads/2012/05/waldo.jpg" alt="Characteres to find" />
-                        <div>Odlaw, Wizard Whitebeard, Wenda, and Waldo</div>
+                        <div className={styles.namesChar}>Odlaw, Wizard Whitebeard, Wenda, and Waldo</div>
                     </div>
                 </div>
                 
@@ -185,8 +185,8 @@ function Picture() {
                             <div
                                 className={styles.click} 
                                 style={{
-                                    left: `${click.x}px`,
-                                    top: `${click.y}px`
+                                    left: `${click.xPer * 100}%`,
+                                    top: `${click.yPer * 100}%`
                                 }} 
                             >
                             </div>
@@ -195,8 +195,8 @@ function Picture() {
                                 ref={divRef} 
                                 className={styles.divChoices} 
                                 style={{ 
-                                    left: `${click.x}px`,
-                                    top: `${click.y}px`
+                                    left: `${click.xPer * 100}%`,
+                                    top: `${click.yPer * 100}%`
                                 }}
                                 onClick={(e) => e.stopPropagation()}
                             >
@@ -206,7 +206,7 @@ function Picture() {
                                 )}
                                 <form onSubmit={onSubmit}>
                                     {form.map((character, index) => (
-                                        <Checkbox onChange={onChange} key={index} id={index} checked={character.checked} name={character.name} label={character.name}/>
+                                        <Checkbox onChange={onChange} key={index} id={index} checked={character.checked} name={character.name} label={character.name} value={character.name}/>
                                     ))}
                                     <button type="submit">Submit</button>
                                 </form>
@@ -220,8 +220,8 @@ function Picture() {
                             key={index}
                             className={styles.foundMarker}
                             style={{
-                                left: `${marker.x}px`,
-                                top: `${marker.y}px`
+                                left: `${marker.xPer * 100}%`,
+                                top: `${marker.yPer * 100}%`
                             }}
                         >
                             ✔
@@ -256,6 +256,5 @@ function Picture() {
 
 export default Picture;
 
-//fix issue checkbox on change
 
 

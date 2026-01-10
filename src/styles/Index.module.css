@@ -47,3 +47,9 @@ img {
 img:hover {
   cursor: pointer;
 }
+
+@media (max-width: 540px) {
+  .presentation {
+    text-align: center;
+  }
+}

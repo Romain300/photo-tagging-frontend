@@ -1,6 +1,6 @@
 import styles from '../styles/Input.module.css';
 
-function Checkbox({ label, checked, name, id, onChange }) {
+function Checkbox({ label, checked, name, id, onChange, value }) {
     
     return (
         <div>
@@ -10,6 +10,7 @@ function Checkbox({ label, checked, name, id, onChange }) {
                 type="checkbox" 
                 name={name} 
                 onChange={onChange} 
+                value={value}
             />
             <label htmlFor={id}>
                 {label}

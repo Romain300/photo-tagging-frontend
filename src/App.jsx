@@ -1,6 +1,7 @@
 import Picture from "./components/Picture";
 import Index from "./components/Index";
 import './App.css';
+import NotFound from "./components/404NotFound";
 import { Routes, Route } from 'react-router-dom';
 
 
@@ -12,6 +13,8 @@ function App() {
       <Routes>
         <Route path="/" element={ <Index/> }/>
         <Route path="/pictures/:pictureId" element={ <Picture/> }/>
+        <Route path="/404NotFound" element={ <NotFound/> }/>
+        <Route path="*" element={ <NotFound/> }/>
       </Routes>
     </main>
       

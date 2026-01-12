@@ -1,12 +1,13 @@
 import styles from "../styles/Picture.module.css";
 import { useState, useRef, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import Checkbox from "./Input";
 import PLayerForm from "./PlayerForm";
 import Leaderboard from "./Leaderboard";
 
 function Picture() {
     const location = useLocation();
+    const navigate = useNavigate();
     const { pictureId } = useParams();
     const [click, setClick] = useState(null);
     const [secondes, setSecondes] = useState(0);
@@ -126,6 +127,7 @@ function Picture() {
             });
 
             if (!response.ok) {
+                navigate("/404NotFound");
                 return;
             }
 
@@ -139,7 +141,7 @@ function Picture() {
         }
 
         getPicture();
-    }, [pictureId]);
+    }, [pictureId, navigate]);
 
     useEffect(() => {
         if (gameFinished) return;

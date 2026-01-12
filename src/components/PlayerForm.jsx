@@ -11,7 +11,7 @@ function PLayerForm({ closeDialog, data, onChange, value, addPlayer }) {
 
         try {
             console.log(data)
-            const response = await fetch("http://localhost:3000/players", {
+            const response = await fetch("https://photo-tagging-backend-production.up.railway.app/players", {
                 mode: "cors",
                 method: "POST",
                 headers: { "content-type": "application/json"},

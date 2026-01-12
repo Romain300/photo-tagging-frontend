@@ -18,7 +18,7 @@ function Leaderboard({pictureId, resetGame}) {
 
     useEffect(() => {
         const getPLayersList = async() => {
-            const response = await fetch(`http://localhost:3000/players/${pictureId}`, {
+            const response = await fetch(`https://photo-tagging-backend-production.up.railway.app/players/${pictureId}`, {
                 mode: "cors",
                 headers: {"content-type": "application/json"}
             });

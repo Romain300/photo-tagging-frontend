@@ -9,7 +9,7 @@ function Index() {
     useEffect(() => {
         const getPictures = async() => {
             try {
-                const response = await fetch('http://localhost:3000/pictures', {
+                const response = await fetch('https://photo-tagging-backend-production.up.railway.app/pictures', {
                     mode: "cors",
                     headers: { "Content-type": "applpication/json" }
                 })

@@ -10,8 +10,7 @@ function Picture() {
     const navigate = useNavigate();
     const { pictureId } = useParams();
     const [click, setClick] = useState(null);
-    const [secondes, setSecondes] = useState(0);
-    const [minutes, setMinutes] = useState(0);
+    const [time, setTime] = useState(0);
     const [form, setForm] = useState(null);
     const [picture, setPicture] = useState(null);
     const pictureRef = useRef();
@@ -29,8 +28,7 @@ function Picture() {
 
     const resetGame = () => {
         setClick(null);
-        setSecondes(0);
-        setMinutes(0);
+        setTime(0)
         setForm(picture?.characters || []); 
         setMarkers([]);
         setGameFinished(false);
@@ -41,6 +39,9 @@ function Picture() {
 
     const onclick = (e) => {
         const rect = pictureRef.current.getBoundingClientRect();
+        const x = (e.clientX - rect.left);
+        const y = (e.clientY - rect.top);
+        console.log(x,y);
         setClick({
             xPer: (e.clientX - rect.left) / rect.width,
             yPer: (e.clientY - rect.top) / rect.height
@@ -88,7 +89,7 @@ function Picture() {
                 setGameFinished(true);
                 setPlayerData({
                     ...playerData,
-                    ["time"]: `${minutes}:${secondes % 60}`
+                    ["time"]: `${Math.floor(time / 60)}:${time % 60}`
                 });
                 dialogRef.current.showModal();
             }
@@ -121,7 +122,7 @@ function Picture() {
 
     useEffect(() => {
         const getPicture = async() => {
-            const response = await fetch(`https://photo-tagging-backend-production.up.railway.app/pictures/${pictureId}`, {
+            const response = await fetch(`https://photo-tagging-backend-production.up.railway.app/${pictureId}`, {
                 mode: "cors",
                 headers: { "content-type": "application/json"}
             });
@@ -146,17 +147,12 @@ function Picture() {
     useEffect(() => {
         if (gameFinished) return;
 
-        const intervalSeconde = setInterval(() => {
-            setSecondes((prev) => (prev + 1));
+        const intervalTime = setInterval(() => {
+            setTime((prev) => (prev + 1));
         }, 1000);
 
-        const intervalMinute = setInterval(() => {
-            setMinutes((prev) => (prev + 1));
-        }, 60000);
-
         return () => {
-            clearInterval(intervalSeconde);
-            clearInterval(intervalMinute);
+            clearInterval(intervalTime);
         }
     }, [gameFinished]);
     
@@ -168,11 +164,11 @@ function Picture() {
             { picture && (
                 <div className={styles.intro}>
                     <h1>🔍 {picture.title}</h1>
-                    <h2>{minutes}:{secondes % 60}</h2>
-                    <h3>Find the charactersc below !</h3>
+                    <h2>{Math.floor(time / 60)}:{time % 60}</h2>
+                    <h3>Find the characters below !</h3>
                     <div className={styles.card}>
                         <img className={styles.characteres} src="https://curiousstgeorge.wordpress.com/wp-content/uploads/2012/05/waldo.jpg" alt="Characteres to find" />
-                        <div className={styles.namesChar}>Odlaw, Wizard Whitebeard, Wenda, and Waldo</div>
+                        <div className={styles.namesChar}>Odlaw, Wizard Whitebeard, Wenda, Waldo and Woof</div>
                     </div>
                 </div>
                 
@@ -237,7 +233,7 @@ function Picture() {
                 { !playerAdded && (
                     <>
                         <h3>Congratulation! you finished it in:</h3>
-                        <h2>{minutes}:{secondes % 60}</h2>
+                        <h2>{Math.floor(time / 60)}:{time % 60}</h2>
                         <PLayerForm data={playerData} closeDialog={closeDialog} onChange={playerName} value={playerData.name} addPlayer={addPlayer}/>
                     </>
                 )}

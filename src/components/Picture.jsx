@@ -122,7 +122,7 @@ function Picture() {
 
     useEffect(() => {
         const getPicture = async() => {
-            const response = await fetch(`https://photo-tagging-backend-production.up.railway.app/${pictureId}`, {
+            const response = await fetch(`https://photo-tagging-backend-production.up.railway.app/pictures/${pictureId}`, {
                 mode: "cors",
                 headers: { "content-type": "application/json"}
             });

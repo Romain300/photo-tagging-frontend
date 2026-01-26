@@ -4,8 +4,10 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import Checkbox from "./Input";
 import PLayerForm from "./PlayerForm";
 import Leaderboard from "./Leaderboard";
+import useHint from "./Hint";
 
 function Picture() {
+    const { getHint, loading, error, setError } = useHint();
     const location = useLocation();
     const navigate = useNavigate();
     const { pictureId } = useParams();
@@ -37,6 +39,14 @@ function Picture() {
         setMessage(null);
     };
 
+    const handleHint = async() => {
+        const character = form.find((char) => char.checked === true);
+
+        const hint = await getHint(picture.title, character);
+        hint ? setMessage(hint) : setMessage(null);
+        
+    };
+
     const onclick = (e) => {
         const rect = pictureRef.current.getBoundingClientRect();
         const x = (e.clientX - rect.left);
@@ -47,6 +57,7 @@ function Picture() {
             yPer: (e.clientY - rect.top) / rect.height
         })
         setMessage(null);
+        setError(null);
     };
 
     const onChange = (event) => {
@@ -69,6 +80,7 @@ function Picture() {
 
     const onSubmit = (event) => {
         event.preventDefault();
+        setError(null);
         
         const found = form.find(character => 
             character.checked 
@@ -156,9 +168,6 @@ function Picture() {
         }
     }, [gameFinished]);
     
-
-  
-
     return (
         <section key={location.key}>
             { picture && (
@@ -199,15 +208,31 @@ function Picture() {
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <h3>Who's here</h3>
-                                { message && (
-                                    <p>{message}</p>
-                                )}
+                                {error && <p>{error}</p>}
+                                { message && (<p>{message}</p>) }
                                 <form onSubmit={onSubmit}>
                                     {form.map((character, index) => (
-                                        <Checkbox onChange={onChange} key={index} id={index} checked={character.checked} name={character.name} label={character.name} value={character.name}/>
+                                        <Checkbox 
+                                            onChange={onChange}
+                                            key={index} 
+                                            id={index} 
+                                            checked={character.checked} 
+                                            name={character.name} 
+                                            label={character.name} 
+                                            value={character.name}
+                                        />
                                     ))}
-                                    <button type="submit">Submit</button>
+                                    <button className={styles.submitButton} type="submit">Submit</button>
                                 </form>
+                                 <button 
+                                    type="button" 
+                                    className={styles.hintButton}
+                                    onClick={handleHint}
+                                    disabled={loading}
+                                    
+                                >
+                                    {loading ? "Loading..." : "Get Hint"}
+                                </button>
                             </div>
 
                         </>
@@ -247,12 +272,7 @@ function Picture() {
             </dialog>
 
         </section>
-        
-
     )
 };
 
 export default Picture;
-
-
-
